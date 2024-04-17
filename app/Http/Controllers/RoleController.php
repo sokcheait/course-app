@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Jobs\CreatePermissionJob;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
@@ -26,6 +27,16 @@ class RoleController extends Controller
     }
     public function store(Request $request) 
     {
-        dd($request->all());
+        $request->validate([
+            'name' => 'required',
+            'permissions' => 'required',
+        ]);
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => 'web'
+        ]);
+        $role->syncPermissions($request->permissions);
+
+        return redirect()->route('roles.index');
     }
 }
