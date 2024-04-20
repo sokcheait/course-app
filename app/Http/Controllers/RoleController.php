@@ -20,7 +20,13 @@ class RoleController extends Controller
     {
         $view = "Roles/Create";
         $list_permissions = config('set-permission.permissions');
-        CreatePermissionJob::dispatch();
+        $multi_dimensional_array = array_values($list_permissions);
+        $single_array = array_merge(...$multi_dimensional_array);
+        $array_keys = array_keys($single_array);
+        $permiss = Permission::whereNotIn('name',$array_keys)->count();
+        if($permiss>0){
+            CreatePermissionJob::dispatch();
+        }
         return Inertia::render($view,[
             'list_permissions' => $list_permissions
         ]);
