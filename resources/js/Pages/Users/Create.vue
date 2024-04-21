@@ -21,8 +21,8 @@ export default {
                 name: '',
                 email:null,
                 password:null,
-                confirm_password:null,
-                roles_id:[]
+                password_confirmation:null,
+                roles:[]
             }),
         }
     },
@@ -80,11 +80,11 @@ export default {
                             </div>
                             <div class="p-2 w-full">
                                 <label class="mt-2 pb-2">Confirm Password</label>
-                                <input type="password" v-model="form.confirm_password" class="w-full px-2 py-2 border-gray-400 rounded-md" placeholder="Please input confirm password" />
+                                <input type="password" v-model="form.password_confirmation" class="w-full px-2 py-2 border-gray-400 rounded-md" placeholder="Please input confirm password" />
                             </div>
                             <div class="p-2 w-full">
                                 <label class="mt-2 pb-2">Roles</label>
-                                <select v-model="form.roles_id" class="w-full px-2 py-2 border-gray-400 rounded-md">
+                                <select v-model="form.roles" class="w-full px-2 py-2 border-gray-400 rounded-md">
                                     <option v-for="role in roles" :key="role" :value="role.id">{{ role.name }}</option>
                                 </select>
                             </div>
