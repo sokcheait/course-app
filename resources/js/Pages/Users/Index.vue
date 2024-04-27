@@ -10,8 +10,8 @@ import Welcome from '@/Components/Welcome.vue';
                 User
             </h2>
             <div class="flex">
-                <div class="border bg-teal-600 px-4 py-2">
-                    <a :href="this.route('users.create')" class="text-sm text-white">Create User</a>
+                <div v-if="can('users.create') || is_superAdmin('super-admin')" class="border bg-teal-600 px-4 py-2">
+                    <a :href="route('users.create')" class="text-sm text-white">Create User</a>
                 </div>
             </div>
         </template>

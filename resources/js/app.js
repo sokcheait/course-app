@@ -15,6 +15,30 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .mixin({methods: {
+                can: function(permissions) {
+                    var param = Array(permissions)
+                    var allPermissions = this.$page.props.auth.can;
+                    var hasPermission = false;
+                    param.forEach(function(item){
+                        if(allPermissions[item]){
+                            hasPermission = true;  
+                        }
+                    });
+                    return hasPermission;
+                },
+                is_superAdmin: function(val) {
+                    var permission_super = this.$page.props.auth.is_super_admin;
+                    var access_level_master = this.$page.props.auth.user.access_level_master;
+                    var hasPermission = false;
+                    permission_super.forEach(function(item){
+                        if(item.name==val && access_level_master==true){
+                            hasPermission = true;
+                        }
+                    });
+                    return hasPermission;
+                }
+            }})
             .mount(el);
     },
     progress: {

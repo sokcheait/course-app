@@ -68,7 +68,7 @@ const logout = () => {
                             <div class="ms-3 relative">
                                 <!-- Teams Dropdown -->
                                 <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
-                                    <template #trigger>
+                                    <!-- <template #trigger>
                                         <span class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                                                 {{ $page.props.auth.user.current_team.name }}
@@ -78,7 +78,7 @@ const logout = () => {
                                                 </svg>
                                             </button>
                                         </span>
-                                    </template>
+                                    </template> -->
 
                                     <template #content>
                                         <div class="w-60">
@@ -88,16 +88,16 @@ const logout = () => {
                                             </div>
 
                                             <!-- Team Settings -->
-                                            <DropdownLink :href="route('teams.show', $page.props.auth.user.current_team)">
+                                            <!-- <DropdownLink :href="route('teams.show', $page.props.auth.user.current_team)">
                                                 Team Settings
                                             </DropdownLink>
 
                                             <DropdownLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')">
                                                 Create New Team
-                                            </DropdownLink>
+                                            </DropdownLink> -->
 
                                             <!-- Team Switcher -->
-                                            <template v-if="$page.props.auth.user.all_teams.length > 1">
+                                            <!-- <template v-if="$page.props.auth.user.all_teams.length > 1">
                                                 <div class="border-t border-gray-200" />
 
                                                 <div class="block px-4 py-2 text-xs text-gray-400">
@@ -117,7 +117,7 @@ const logout = () => {
                                                         </DropdownLink>
                                                     </form>
                                                 </template>
-                                            </template>
+                                            </template> -->
                                         </div>
                                     </template>
                                 </Dropdown>
@@ -209,7 +209,7 @@ const logout = () => {
                     <!-- Responsive Settings Options -->
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="flex items-center px-4">
-                            <div v-if="$page.props.jetstream.managesProfilePhotos" class="shrink-0 me-3">
+                            <!-- <div v-if="$page.props.jetstream.managesProfilePhotos" class="shrink-0 me-3">
                                 <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name">
                             </div>
 
@@ -220,7 +220,7 @@ const logout = () => {
                                 <div class="font-medium text-sm text-gray-500">
                                     {{ $page.props.auth.user.email }}
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="mt-3 space-y-1">
@@ -248,16 +248,16 @@ const logout = () => {
                                 </div>
 
                                 <!-- Team Settings -->
-                                <ResponsiveNavLink :href="route('teams.show', $page.props.auth.user.current_team)" :active="route().current('teams.show')">
+                                <!-- <ResponsiveNavLink :href="route('teams.show', $page.props.auth.user.current_team)" :active="route().current('teams.show')">
                                     Team Settings
                                 </ResponsiveNavLink>
 
                                 <ResponsiveNavLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')" :active="route().current('teams.create')">
                                     Create New Team
-                                </ResponsiveNavLink>
+                                </ResponsiveNavLink> -->
 
                                 <!-- Team Switcher -->
-                                <template v-if="$page.props.auth.user.all_teams.length > 1">
+                                <!-- <template v-if="$page.props.auth.user.all_teams.length > 1">
                                     <div class="border-t border-gray-200" />
 
                                     <div class="block px-4 py-2 text-xs text-gray-400">
@@ -276,7 +276,7 @@ const logout = () => {
                                             </ResponsiveNavLink>
                                         </form>
                                     </template>
-                                </template>
+                                </template> -->
                             </template>
                         </div>
                     </div>

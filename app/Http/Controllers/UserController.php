@@ -10,14 +10,24 @@ use App\Models\Team;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        //  $this->middleware('permission:users.index|users.create|users.edit|users-destroy', ['only' => ['index','show']]);
+        //  $this->middleware('permission:users.create', ['only' => ['create','store']]);
+        //  $this->middleware('permission:users.edit', ['only' => ['edit','update']]);
+        //  $this->middleware('permission:users.destroy', ['only' => ['destroy']]);
+    }
+
     public function index(Request $request)
     {
+        $this->authorize('users.index');
         $view = "Users/Index";
         return Inertia::render($view);
     }
 
     public function create()
     {
+        $this->authorize('users.create');
         $view = "Users/Create";
         $roles = app(Role::class)->all();
         return Inertia::render($view,['roles'=>$roles]);
@@ -25,6 +35,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('users.store');
         $filed = $request->validate([
             'name' => 'required|string',
             'email' => [
@@ -61,6 +72,11 @@ class UserController extends Controller
         ]);
         $user->assignRole($filed['roles']);
         return redirect()->route('users.index');
+    }
+
+    public function edit($id)
+    {
+
     }
 
 }

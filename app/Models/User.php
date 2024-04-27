@@ -28,7 +28,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','access_level','access_level_master'
     ];
 
     /**
@@ -60,4 +60,12 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function getPermissionArray()
+    {
+        return $this->getAllPermissions()->mapWithKeys(function($pr){
+            return [$pr['name'] => true];
+        });
+   
+    }
 }

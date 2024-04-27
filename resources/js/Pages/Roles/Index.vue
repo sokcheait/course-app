@@ -11,7 +11,7 @@ import Welcome from '@/Components/Welcome.vue';
             </h2>
             <div class="flex">
                 <div class="border bg-teal-600 px-4 py-2">
-                    <a :href="this.route('roles.create')" class="text-sm text-white">Create Role</a>
+                    <a :href="route('roles.create')" class="text-sm text-white">Create Role</a>
                 </div>
             </div>
         </template>
