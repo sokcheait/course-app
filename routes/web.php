@@ -37,4 +37,5 @@ Route::middleware([
     })->name('dashboard');
     Route::resource('/roles',RoleController::class);
     Route::resource('/users',UserController::class);
+    Route::get('/users/users_verify', [UserController::class,'userVerifes'])->name('users.users_verify');
 });
