@@ -59,12 +59,11 @@ export default {
 <template>
     <AppLayout title="Create User">
         <template #header>
-            <NavLink :href="route('users.index')" :active="route().current('users.index')" class="px-4">
-                Users
-            </NavLink>
-            <NavLink v-if="can('users.create') || is_superAdmin('super-admin')" :href="route('users.create')" :active="route().current('users.create')" class="px-4">
-                Create User
-            </NavLink>
+            <div class="ml-auto flex items-center space-x-7">
+                <div class="ms-3 relative ">
+                    Users
+                </div>
+            </div>
         </template>
         <div class="sm:px-7 sm:pt-7 px-4 pt-4 flex flex-col w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 sticky top-0">
             <div class="flex w-full items-center border rounded-lg p-2">
@@ -78,7 +77,6 @@ export default {
             </div>
             <div class="flex items-center space-x-3 sm:mt-7 mt-4">
                 <Link :href="route('users.create')" class="px-3 border-b-2 text-gray-500 dark:text-white dark:border-white pb-1.5" :class="{'border-blue-500 text-blue-600 ':route().current('users.create')}">Information</Link>
-                <Link :href="route('users.users_verify')" class="px-3 border-b-2 text-gray-500 dark:text-white dark:border-white pb-1.5" :class="{'border-blue-500 text-blue-600':route().current('users.users_verify')}">Verify information</Link>
                 <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5">Transfer</a>
                 <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Notifications</a>
                 <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Cards</a>

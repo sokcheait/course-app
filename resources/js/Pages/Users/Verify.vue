@@ -78,7 +78,6 @@ export default {
             </div>
             <div class="flex items-center space-x-3 sm:mt-7 mt-4">
                 <Link :href="route('users.create')" class="px-3 border-b-2 text-gray-500 dark:text-white dark:border-white pb-1.5" :class="{'border-blue-500 text-blue-600 ':route().current('users.create')}">Information</Link>
-                <Link :href="route('users.users_verify')" class="px-3 border-b-2 text-gray-500 dark:text-white dark:border-white pb-1.5" :class="{'border-blue-500 text-blue-600':route().current('users.users_verify')}">Verify information</Link>
                 <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5">Transfer</a>
                 <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Notifications</a>
                 <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Cards</a>

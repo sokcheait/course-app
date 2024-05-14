@@ -18,7 +18,15 @@ export default {
     },
     data() {
         return {
-           
+           sub_navigation:false
+        }
+    },
+    created() {
+        
+    },
+    methods: {
+        toggleNavigation(event){
+            this.sub_navigation = event.target.value;
         }
     }
 }
@@ -27,29 +35,70 @@ export default {
 <template>
     <AppLayout title="User">
         <template #header>
-            <NavLink :active="route().current('users.index')" class="px-4">
-                User
-            </NavLink>
-
+            <div class="ml-auto flex items-center space-x-7">
+                <div class="ms-3 relative ">
+                    Users
+                </div>
+            </div>
         </template>
         <div>
             <div class="sm:px-7 sm:pt-7 px-4 pt-4 flex flex-col w-full border-b border-gray-200 bg-white dark:bg-gray-900 dark:text-white dark:border-gray-800 sticky top-0">
-                    <div class="flex w-full items-center border rounded-lg p-2">
-                        <div class="flex items-center text-sm text-gray-600 dark:text-white">
-                            <HomeIcon class="w-4 h-4 mx-1" />
-                            <ChevronRightIcon class="w-4 h-4 mx-1 mt-[1px]" />
-                            <span class="mx-1 mt-[3px]">Users</span>
-                        </div>
+                <div class="flex w-full items-center border rounded-lg p-2">
+                    <div class="flex items-center text-sm text-gray-600 dark:text-white">
+                        <HomeIcon class="w-4 h-4 mx-1" />
+                        <span class="mx-1 mt-[3px]">Home</span>
+                        <ChevronRightIcon class="w-4 h-4 mx-1 mt-[1px]" />
+                        <span class="mx-1 mt-[3px]">Users</span>
                     </div>
-                    <div class="flex items-center space-x-3 sm:mt-7 mt-4">
-                        <a href="#" class="px-3 border-b-2 border-blue-500 text-blue-500 dark:text-white dark:border-white pb-1.5">Data Table</a>
-                        <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5">Transfer</a>
-                        <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Budgets</a>
-                        <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Notifications</a>
-                        <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Cards</a>
+                </div>
+                <div class="flex items-center space-x-3 sm:mt-7 mt-4">
+                    <div class='items-center justify-center py-2'>
+                        <!-- <ul class="mx-auto grid max-w-full w-full grid-cols-3 gap-x-5">
+                          <li class="">
+                            <input class="peer sr-only" type="radio" value="yes" name="answer" id="yes" checked />
+                                <label class="flex justify-center cursor-pointer rounded-full border border-gray-300 bg-white py-2 px-4 hover:bg-gray-50 focus:outline-none peer-checked:border-transparent peer-checked:ring-2 peer-checked:ring-indigo-500 transition-all duration-500 ease-in-out" for="yes">Details
+                                </label>
+                                <div class="mt-2 border-indigo-300 rounded-lg w-[97vw] mx-auto transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                                </div>
+                            </li>
+
+                          <li class="">
+                            <input class="peer sr-only" type="radio" value="no" name="answer" id="no" />
+                            <label class="flex justify-center cursor-pointer rounded-full border border-gray-300 bg-white py-2 px-4 hover:bg-gray-50 focus:outline-none peer-checked:border-transparent peer-checked:ring-2 peer-checked:ring-indigo-500 transition-all duration-500 ease-in-out" for="no">About</label>
+
+                                <div class="absolute bg-white shadow-lg left-0 p-6 border mt-2 border-indigo-300 rounded-lg w-[97vw] mx-auto transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                            </div>
+                          </li>
+
+                          <li class="">
+                            <input class="peer sr-only" type="radio" value="yesno" name="answer" id="yesno" />
+                            <label class="flex justify-center cursor-pointer rounded-full border border-gray-300 bg-white py-2 px-4 hover:bg-gray-50 focus:outline-none peer-checked:border-transparent peer-checked:ring-2 peer-checked:ring-indigo-500 transition-all duration-500 ease-in-out " for="yesno">Something</label>
+
+                                <div class="absolute bg-white shadow-lg left-0 p-6 border mt-2 border-indigo-300 rounded-lg w-[97vw] mx-auto transition-all duration-500 ease-in-out translate-x-40 opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:translate-x-1">
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                              Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, voluptatum! Sequi consequatur error nulla quaerat rem fugit provident tempore nihil a aspernatur ad laboriosam, dolor nisi qui? Esse, mollitia? Nostrum?
+                            </div>
+                          </li>
+                        </ul> -->
                     </div>
+                    <a href="#" class="px-3 border-b-2 border-blue-500 text-blue-500 dark:text-white dark:border-white pb-1.5">Data Table</a>
+                    <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5">Transfer</a>
+                    <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Budgets</a>
+                    <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Notifications</a>
+                    <a href="#" class="px-3 border-b-2 border-transparent text-gray-600 dark:text-gray-400 pb-1.5 sm:block hidden">Cards</a>
+                </div>
             </div>
-            <div class="sm:p-7 p-4">
+
+            <!-- <div class="sm:p-7 p-4">
                 <div class="flex w-full items-center mb-7">
                     <Link v-if="can('users.create') || is_superAdmin('super-admin')" :href="route('users.create')" class="inline-flex bg-teal-500 mr-3 items-center h-8 pl-2.5 pr-2 rounded-md shadow text-white dark:text-gray-400 dark:border-gray-800 border border-gray-200 leading-none py-0 hover:opacity-75">
                         <PlusCircleIcon class="w-5 h-5 mr-1" />
@@ -716,7 +765,7 @@ export default {
                     </svg>
                 </button>
                 </div>
-            </div>
+            </div>  -->   
         </div>
     </AppLayout>
 </template>

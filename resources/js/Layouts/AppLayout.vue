@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import Navigation from '@/Layouts/Navigation.vue';
@@ -14,6 +14,7 @@ defineProps({
 });
 
 const showingNavigationDropdown = ref(false);
+const sub_navigation = false;
 
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
@@ -26,6 +27,59 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+const toggleNavigation = (event) => {
+    // sub_navigation = event.target.value;
+    console.log(sub_navigation)
+}
+</script> -->
+<script>
+import { ref } from 'vue';
+import { Head, Link, router } from '@inertiajs/vue3';
+import Navigation from '@/Layouts/Navigation.vue';
+import ApplicationMark from '@/Components/ApplicationMark.vue';
+import Banner from '@/Components/Banner.vue';
+import Dropdown from '@/Components/Dropdown.vue';
+import DropdownLink from '@/Components/DropdownLink.vue';
+import NavLink from '@/Components/NavLink.vue';
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+export default {
+    components: {
+        Navigation,
+        ApplicationMark,
+        Banner,
+        Head, Link, router,
+        Dropdown,DropdownLink,NavLink,ResponsiveNavLink
+    },
+    props: {
+        title: String,
+    },
+    setup() {
+       
+    },
+    data() {
+        return {
+           sub_navigation:false
+        }
+    },
+    created() {
+        
+    },
+    methods: {
+        toggleNavigation(event){
+            this.sub_navigation = event.target.value;
+        },
+        logout() {
+            router.post(route('logout'));
+        },
+        switchToTeam(team) {
+            router.put(route('current-team.update'), {
+                team_id: team.id,
+            }, {
+                preserveState: false,
+            });
+        }
+    }
+}
 </script>
 
 <template>
@@ -35,10 +89,14 @@ const logout = () => {
         <Banner />
         <div class="bg-gray-100 dark:bg-gray-900 dark:text-white text-gray-600 h-screen flex overflow-hidden text-sm">
             <div class="bg-white dark:bg-gray-900 dark:border-gray-800 w-20 flex-shrink-0 border-r border-gray-200 flex-col hidden sm:flex">
-                <div class="h-16 text-blue-500 flex items-center justify-center">
-                    <svg class="w-9" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 54 33">
-                    <path fill="currentColor" fill-rule="evenodd" d="M27 0c-7.2 0-11.7 3.6-13.5 10.8 2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 13.09 33.808 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.11 33.692 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.514 3.522 2.004 5.147 3.653C17.244 29.29 20.308 32.4 27 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 19.31 20.192 16.2 13.5 16.2z" clip-rule="evenodd" />
-                    </svg>
+                <div class="mt-2">
+                    <div class="ms-3 relative">
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" v-model="sub_navigation" :value="sub_navigation" @change=toggleNavigation($event) class="sr-only peer">
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <!-- <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Toggle</span> -->
+                        </label>
+                    </div>
                 </div>
                 <Navigation />
             </div>
@@ -96,8 +154,7 @@ const logout = () => {
                 </header>
 
                 <div class="flex-grow flex overflow-x-hidden">
-
-                    <div class="xl:w-72 w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block hidden p-5">
+                    <div v-if="sub_navigation=='true'" class="xl:w-72 w-48 flex-shrink-0 border-r border-gray-200 dark:border-gray-800 h-full overflow-y-auto lg:block hidden p-5">
                         <div class="text-xs text-gray-400 tracking-wider">USERS</div>
                         <div class="relative mt-2">
                             <input type="text" class="pl-8 h-9 bg-transparent border border-gray-300 dark:border-gray-700 dark:text-white w-full rounded-md text-sm" placeholder="Search" />
@@ -159,6 +216,7 @@ const logout = () => {
                             </button>
                         </div>
                     </div>
+
                     <div class="flex-grow bg-white dark:bg-gray-900 overflow-y-auto">
                         <main>
                             <slot />

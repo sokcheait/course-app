@@ -78,12 +78,5 @@ class UserController extends Controller
     {
 
     }
-    public function userVerifes()
-    {
-        dd(123);
-        // $this->authorize('users.index');
-        $view = "Users/Verify";
-        return Inertia::render($view);
-    }
 
 }
