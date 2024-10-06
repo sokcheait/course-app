@@ -35,9 +35,10 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         $this->authorize('users.store');
         $filed = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|min:3',
             'email' => [
                 'required',
                 'max:50',
