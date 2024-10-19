@@ -10,6 +10,7 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        './node_modules/@flavorly/vanilla-components/dist/presets/tailwind/all.json', 
     ],
 
     theme: {
@@ -20,5 +21,11 @@ export default {
         },
     },
 
-    plugins: [forms, typography],
+    plugins: [forms, typography,
+        require('@tailwindcss/typography'),
+        require('@tailwindcss/aspect-ratio'),
+
+        // Forms plugin is required if you are using the tailwind preset
+        require('@tailwindcss/forms'), 
+    ],
 };

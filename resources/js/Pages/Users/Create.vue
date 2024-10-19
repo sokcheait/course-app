@@ -13,7 +13,7 @@ export default {
         useForm,
         NavLink,
         HomeIcon,ChevronRightIcon,
-        TextInput
+        TextInput,
     },
     props: {
         roles: Object,

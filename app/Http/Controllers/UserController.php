@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Team;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -20,9 +21,16 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+        // dd($request);
         $this->authorize('users.index');
         $view = "Users/Index";
-        return Inertia::render($view);
+        $users = User::paginate(10);
+        return Inertia::render($view)->with(['users' => $users]);
+        // return response()->json([
+        //     'message' => 'User created successfully!',
+        //     'redirect' => route('users.index'), // URL to redirect to
+        //     'users' => $users, // Optionally return the created user data
+        // ]);
     }
 
     public function create()
@@ -77,6 +85,46 @@ class UserController extends Controller
 
     public function edit($id)
     {
+
+    }
+
+    public function storeDynamicForm(Request $request)
+    {
+        // Get all input data
+        $data = $request->all();
+
+        // Initialize validation rules
+        $rules = [];
+
+        // Iterate through input data
+        foreach ($data as $key => $items) {
+            if (is_array($items)) {
+                foreach ($items as $index => $item) {
+                    foreach ($item as $fieldKey => $fieldValue) {
+                        if (array_key_exists('value', $fieldValue)) {
+                            $rule = '';
+
+                            // Add 'required' rule if specified and value is empty
+                            if (isset($fieldValue['required']) && $fieldValue['required']) {
+                                $rule .= 'required|';
+                            }
+
+                            // Check if the field contains a 'rules' key with dynamic validation rules
+                            if (isset($fieldValue['rules']) && is_string($fieldValue['rules'])) {
+                                $rule .= $fieldValue['rules'];
+                            }
+
+                            // Assign the rule to the corresponding validation key
+                            if ($rule) {
+                                $rules["$key.$index.$fieldKey.value"] = rtrim($rule, '|'); // Remove trailing pipe
+                            }
+                        }
+                    }
+                }
+            }
+        }
+         $validatedData = $request->validate($rules);
+         dd($validatedData);
 
     }
 

@@ -5,6 +5,14 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { ProCalendar } from "@lbgm/pro-calendar-vue";
+import "@lbgm/pro-calendar-vue/style";
+import { createDynamicForms } from '@asigloo/vue-dynamic-forms'
+const VueDynamicForms = createDynamicForms()
+
+import { Plugin } from '@flavorly/vanilla-components'
+// Or If you prefer
+import { VanillaComponents } from '@flavorly/vanilla-components'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -15,6 +23,9 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(ProCalendar)
+            .use(VueDynamicForms)
+            .use(VanillaComponents)
             .mixin({methods: {
                 can: function(permissions) {
                     var param = Array(permissions)
