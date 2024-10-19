@@ -1,37 +1,3 @@
-<!-- <script setup>
-import { ref } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
-import Navigation from '@/Layouts/Navigation.vue';
-import ApplicationMark from '@/Components/ApplicationMark.vue';
-import Banner from '@/Components/Banner.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-
-defineProps({
-    title: String,
-});
-
-const showingNavigationDropdown = ref(false);
-const sub_navigation = false;
-
-const switchToTeam = (team) => {
-    router.put(route('current-team.update'), {
-        team_id: team.id,
-    }, {
-        preserveState: false,
-    });
-};
-
-const logout = () => {
-    router.post(route('logout'));
-};
-const toggleNavigation = (event) => {
-    // sub_navigation = event.target.value;
-    console.log(sub_navigation)
-}
-</script> -->
 <script>
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
@@ -42,6 +8,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+import { useWakeLock } from '@vueuse/core'
 export default {
     components: {
         Navigation,
@@ -54,7 +21,8 @@ export default {
         title: String,
     },
     setup() {
-       
+        const { isSupported, isActive, forceRequest, request, release } = useWakeLock()
+        return { isSupported, isActive, forceRequest, request, release }
     },
     data() {
         return {
@@ -62,11 +30,12 @@ export default {
         }
     },
     created() {
-        
+        this.sub_navigation = localStorage.getItem("toggle_navigation");
     },
     methods: {
         toggleNavigation(event){
-            this.sub_navigation = event.target.value;
+            localStorage.setItem("toggle_navigation", event.target.value);
+            this.sub_navigation = localStorage.getItem("toggle_navigation");
         },
         logout() {
             router.post(route('logout'));
