@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="border-none">
         <VanillaInput
             v-model="model"
             :placeholder="placeholder"
@@ -42,7 +42,7 @@ export default {
     computed:{
         model: {
             get() { return this.modelValue },
-            set(newValue) { this.$emit('update:modelValue', newValue) } 
+            set(newValue) { this.$emit('update:modelValue', newValue); this.$emit('clear-errors'); } 
         }
     },
 }

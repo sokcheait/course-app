@@ -1,6 +1,6 @@
 <!-- DynamicForm.vue -->
 <template>
-    <div>
+    <div class="">
       <h1 class="mb-3 text-base font-semibold">Forms</h1>
       <form @submit.prevent="submitForm">
             <div v-for="(fieldSchema, index) in formSchema" :key="index" class="w-full">
@@ -20,8 +20,8 @@
                                 :id="'field-' + key"
                                 :errors="getError(dataLabel,key,field.name)" 
                                 class=""
+                                @clear-errors="clearError(dataLabel, key, field.name)"
                             ></component>
-                            <!-- {{ errorsFromField }} -->
                         </div>
                         
                     </div>
@@ -73,12 +73,18 @@ export default {
             let keyIndex = dataLabel+'.'+key+'.'+fieldName+'.value';
             return errorsFromField.value?errorsFromField.value[keyIndex]:'';
         };
+        const clearError = (dataLabel, key, fieldName) => {
+            // let keyIndex = `${dataLabel}.${key}.${fieldName}.value`;
+            // if (errorsFromField.value[keyIndex]) {
+            //     delete errorsFromField.value[keyIndex]; // Clear errors for specific field
+            // }
+        };
 
         return {
             formValues,
             errorsFromField,
-            getError
-            // submitForm
+            getError,
+            clearError,
         };
     },
     methods: {

@@ -95,6 +95,7 @@ class UserController extends Controller
 
         // Initialize validation rules
         $rules = [];
+        $messages = [];
 
         // Iterate through input data
         foreach ($data as $key => $items) {
@@ -108,6 +109,10 @@ class UserController extends Controller
                             if (isset($fieldValue['required']) && $fieldValue['required']) {
                                 $rule .= 'required|';
                             }
+                             // Add dynamic rules (like email)
+                            if ($fieldKey === 'email') {
+                                $rule .= 'email|'; // Add email rule here
+                            }
 
                             // Check if the field contains a 'rules' key with dynamic validation rules
                             if (isset($fieldValue['rules']) && is_string($fieldValue['rules'])) {
@@ -117,13 +122,33 @@ class UserController extends Controller
                             // Assign the rule to the corresponding validation key
                             if ($rule) {
                                 $rules["$key.$index.$fieldKey.value"] = rtrim($rule, '|'); // Remove trailing pipe
+
+                                // Custom messages
+                                $fieldName = ucfirst(str_replace('_', ' ', $fieldKey)); // Format field name
+                                if (strpos($rule, 'email') !== false) {
+                                    $messages["$key.$index.$fieldKey.value.email"] = "The $fieldName field must be a valid email address.";
+                                }
+                                if (strpos($rule, 'required') !== false) {
+                                    $messages["$key.$index.$fieldKey.value.required"] = "The $fieldName field is required.";
+                                }
                             }
                         }
                     }
                 }
             }
         }
-         $validatedData = $request->validate($rules);
+        try {
+            // $validatedData = $request->validate($rules);
+            $validatedData = $request->validate($rules, $messages);
+        } catch (ValidationException $e) {
+            // Customize the error messages
+            $errors = $e->validator->errors();
+    
+            // Return the customized error messages
+            // return response()->json(['errors' => $customErrors], 422);
+            return redirect()->back()->withErrors($errors);
+        }
+        //  $validatedData = $request->validate($rules);
          dd($validatedData);
 
     }
