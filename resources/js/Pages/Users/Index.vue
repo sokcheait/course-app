@@ -84,7 +84,7 @@ export default {
                         <span class="mx-1 mt-[3px]">Users</span>
                     </div>
                 </div>
-                <div class="flex items-center space-x-3 sm:mt-7 mt-4">
+                <div class="flex items-center space-x-3 sm:mt-7 mt-4 z-50">
                     <button
                         v-for="(tab, index) in tabs"
                         :key="index"

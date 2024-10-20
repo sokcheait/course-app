@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="z-0">
         <DynamicForm :formSchema="formSchema" />
     </div>
 </template>
@@ -32,6 +32,12 @@ export default {
                             { label: "Name",name:"name" ,type: "text", placeholder: "Enter your name", value: "", required: true, component: 'TextInput' },
                             { label: "Code",name:"code" , type: "text", placeholder: "Enter your code", value: "", required: true, component: 'TextInput' },
                             { label: "Salary", name:"salary" ,type: "text", placeholder: "Enter your salary", value: "", required: true, component: 'TextInput' }
+                    ]
+                },
+                {
+                    'parents': [
+                            { label: "Name",name:"name" ,type: "text", placeholder: "Enter your name", value: "", required: true, component: 'TextInput' },
+                            { label: "Code",name:"code" , type: "text", placeholder: "Enter your code", value: "", required: false, component: 'TextInput' },
                     ]
                 }
             ]
