@@ -110,7 +110,7 @@ class UserController extends Controller
                                 $rule .= 'required|';
                             }
                              // Add dynamic rules (like email)
-                            if ($fieldKey === 'email') {
+                            if (isset($fieldValue['required']) && $fieldValue['required'] && $fieldKey === 'email') {
                                 $rule .= 'email|'; // Add email rule here
                             }
 
@@ -125,6 +125,7 @@ class UserController extends Controller
 
                                 // Custom messages
                                 $fieldName = ucfirst(str_replace('_', ' ', $fieldKey)); // Format field name
+
                                 if (strpos($rule, 'email') !== false) {
                                     $messages["$key.$index.$fieldKey.value.email"] = "The $fieldName field must be a valid email address.";
                                 }
@@ -140,6 +141,9 @@ class UserController extends Controller
         try {
             // $validatedData = $request->validate($rules);
             $validatedData = $request->validate($rules, $messages);
+            $transformedData = $this->extractValues($data);
+            dd($transformedData);
+
         } catch (ValidationException $e) {
             // Customize the error messages
             $errors = $e->validator->errors();
@@ -151,6 +155,29 @@ class UserController extends Controller
         //  $validatedData = $request->validate($rules);
          dd($validatedData);
 
+    }
+
+    // Helper function to recursively extract 'value' fields
+    private function extractValues(array $data): array
+    {
+        $result = [];
+
+        foreach ($data as $key => $items) {
+            if (is_array($items)) {
+                foreach ($items as $subKey => $subItems) {
+                    if (is_array($subItems)) {
+                        foreach ($subItems as $field => $attributes) {
+                            // Check if 'value' exists in attributes and assign it to result
+                            // if (isset($attributes['value'])) {
+                                $result[$key][$field] = $attributes['value'];
+                            // }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 
 }

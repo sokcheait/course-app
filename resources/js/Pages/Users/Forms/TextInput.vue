@@ -3,7 +3,7 @@
         <VanillaInput
             v-model="model"
             :placeholder="placeholder"
-            type="text"
+            :type="type"
             :errors="errors"
             :disabled="disabled"
         />
@@ -29,6 +29,10 @@ export default {
         requirest: {
             type: String,
             default: '',
+        },
+        type: {
+            type: String,
+            default: 'text'
         },
         errors: {
             type: String,

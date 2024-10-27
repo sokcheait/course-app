@@ -8,9 +8,12 @@
                     <h2 class="w-full my-3">
                         <span class="text-sm font-semibold text-rose-500">{{ index+1 }}. {{ dataLabel }}</span>
                     </h2>
-                    <div class="grid grid-cols-2 gap-4 px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 px-4">
                         <div v-for="(field,key) in forms" :key="key" class="w-full">
-                            <label :for="'field-' + key" class="">{{ field.dataLabel }}</label>
+                            <label :for="field.name" class="text-sm font-semibold text-gray-600">
+                                {{ field.label }}
+                                <span v-if="field.required==true" class="text-red-500 mr-2">*</span>
+                            </label>
                             <component
                                 :is="field.component"
                                 v-model="formValues[dataLabel][key][field.name].value"
@@ -19,7 +22,8 @@
                                 :required="field.required"
                                 :id="'field-' + key"
                                 :errors="getError(dataLabel,key,field.name)" 
-                                class=""
+                                class="mt-2"
+                                v-bind="field.props"
                                 @clear-errors="clearError(dataLabel, key, field.name)"
                             ></component>
                         </div>
@@ -38,11 +42,17 @@
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3'
 import TextInput from '../Forms/TextInput.vue';
+import CheckboxInput from '../Forms/CheckboxInput.vue';
+import CheckboxGroupInput from '../Forms/CheckboxGroupInput.vue';
+import RadioBoxInput from '../Forms/RadioBoxInput.vue';
   
 export default {
     name: "DynamicForm",
     components: {
-        TextInput
+        TextInput,
+        CheckboxInput,
+        CheckboxGroupInput,
+        RadioBoxInput
     },
     props: {
         formSchema: {
@@ -62,7 +72,7 @@ export default {
                 fieldSchema[key].forEach(field => {
                     formValues.value[key].push({ 
                         [field.name]: { 
-                            value: '',      // Initialize value
+                            value: null,      // Initialize value
                             required: field.required || false  // Set required
                         }
                     });
@@ -74,10 +84,10 @@ export default {
             return errorsFromField.value?errorsFromField.value[keyIndex]:'';
         };
         const clearError = (dataLabel, key, fieldName) => {
-            // let keyIndex = `${dataLabel}.${key}.${fieldName}.value`;
-            // if (errorsFromField.value[keyIndex]) {
-            //     delete errorsFromField.value[keyIndex]; // Clear errors for specific field
-            // }
+            let keyIndex = `${dataLabel}.${key}.${fieldName}.value`;
+            if (errorsFromField.value[keyIndex]) {
+                delete errorsFromField.value[keyIndex]; // Clear errors for specific field
+            }
         };
 
         return {
@@ -89,6 +99,7 @@ export default {
     },
     methods: {
         submitForm() {
+            console.log(this.formValues)
             this.$inertia.post(route('user.store-dynamic-form'),this.formValues, {
                 preserveScroll: true,
                 preserveStatus: true,
