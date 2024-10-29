@@ -8,7 +8,7 @@
                     <h2 class="w-full my-3">
                         <span class="text-sm font-semibold text-rose-500">{{ index+1 }}. {{ dataLabel }}</span>
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 px-4">
+                    <div class="grid grid-cols-1 gap-4 px-4">
                         <div v-for="(field,key) in forms" :key="key" class="w-full">
                             <label :for="field.name" class="text-sm font-semibold text-gray-600">
                                 {{ field.label }}
@@ -45,6 +45,8 @@ import TextInput from '../Forms/TextInput.vue';
 import CheckboxInput from '../Forms/CheckboxInput.vue';
 import CheckboxGroupInput from '../Forms/CheckboxGroupInput.vue';
 import RadioBoxInput from '../Forms/RadioBoxInput.vue';
+import SingleSelectCheckbox from '../Forms/SingleSelectCheckbox.vue';
+import DynamicInput from '../Forms/DynamicInput.vue';
   
 export default {
     name: "DynamicForm",
@@ -52,7 +54,9 @@ export default {
         TextInput,
         CheckboxInput,
         CheckboxGroupInput,
-        RadioBoxInput
+        RadioBoxInput,
+        SingleSelectCheckbox,
+        DynamicInput
     },
     props: {
         formSchema: {

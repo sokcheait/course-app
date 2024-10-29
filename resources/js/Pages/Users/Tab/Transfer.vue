@@ -64,7 +64,16 @@ export default {
                                 label: "Preferences",
                                 name: "preferences",
                                 props: {
-                                    type: "radio",
+                                    valueDefault: {
+                                        'preferences':[
+                                            {
+                                                'subscribe':'yes',
+                                            },
+                                            {
+                                                'updates':'no',
+                                            }
+                                        ] 
+                                    },
                                     options: [
                                         {
                                             'subscribe':[
@@ -80,9 +89,44 @@ export default {
                                         }
                                     ]
                                 },
-                                value: '',
                                 required: false,
-                                component: 'RadioBoxInput',
+                                component: 'SingleSelectCheckbox',
+                            },
+                            {
+                                label: "FormInputFieldGroup",
+                                name: "inputField",
+                                styleFull:true,
+                                props: {
+                                    valueDefault: {
+                                       
+                                    },
+                                    initialTableData: [
+                                        {
+                                            'emailtest':[
+                                                { type: 'text', name:'email_one', value: '' },
+                                                { type: 'text',name:'email_two', value: '' },
+                                                { type: 'text',name:'email_three', value: '' },
+                                            ],
+                                        },
+                                        {
+                                            'nametest':[
+                                                { type: 'text', name:'name_one', value: '' },
+                                                { type: 'text',name:'name_two', value: '' },
+                                                { type: 'text',name:'name_three', value: '' },
+                                            ],
+                                        },
+                                        {
+                                            'passwordtest':[
+                                                { type: 'text', name:'password_one', value: '' },
+                                                { type: 'text',name:'password_two', value: '' },
+                                                { type: 'text',name:'password_three', value: '' },
+                                            ],
+                                        }
+                                       
+                                    ]
+                                },
+                                required: false,
+                                component: 'DynamicInput',
                             },                        
                     ]
                 },

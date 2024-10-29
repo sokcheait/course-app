@@ -21,6 +21,7 @@
                             </span>
                             <span>{{ item.label }}</span>
                         </label>
+                        <button type="button" @click="clearSelection(dataLabel)" class="ml-4 text-sm text-red-500 hover:underline">Clear</button>
                     </div>
                 </div>
             </div>
@@ -42,7 +43,7 @@ export default {
         },
         type: {
             type: String,
-            default: 'checkbox'
+            default: 'radio'
         }
     },
     data() {
@@ -52,7 +53,13 @@ export default {
     },
     methods: {
         updateValue(key, value) {
+            console.log(key, value)
             this.checkboxValues[key]=value;
+            this.$emit('update:modelValue', this.checkboxValues);
+        },
+        clearSelection(key) {
+            // Clear the selection for a given option group
+            this.checkboxValues[key]=null;
             this.$emit('update:modelValue', this.checkboxValues);
         }
     },
@@ -65,13 +72,9 @@ export default {
 </script>
 <style>
     /* Custom styles for the tick mark */
-    .tick {
-        display: none;
-        color: white; /* Color of the tick mark */
-        font-size: 1.25rem; /* Size of the tick mark */
-    }
+    
     /* Show tick when radio is checked */
-    input[type="radio"]:checked + span .tick {
+    /* input[type="radio"]:checked + span .tick {
         display: block;
-    }
+    } */
 </style>
