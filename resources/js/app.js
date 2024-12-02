@@ -9,6 +9,8 @@ import { ProCalendar } from "@lbgm/pro-calendar-vue";
 import "@lbgm/pro-calendar-vue/style";
 import { createDynamicForms } from '@asigloo/vue-dynamic-forms'
 const VueDynamicForms = createDynamicForms()
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 import { Plugin } from '@flavorly/vanilla-components'
 // Or If you prefer
@@ -26,6 +28,7 @@ createInertiaApp({
             .use(ProCalendar)
             .use(VueDynamicForms)
             .use(VanillaComponents)
+            .component('QuillEditor', QuillEditor)
             .mixin({methods: {
                 can: function(permissions) {
                     var param = Array(permissions)

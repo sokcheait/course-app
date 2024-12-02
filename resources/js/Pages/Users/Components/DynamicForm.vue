@@ -39,7 +39,7 @@
 </template>
   
 <script>
-import { ref } from 'vue';
+import { ref,onMounted, watch } from 'vue';
 import { useForm } from '@inertiajs/vue3'
 import TextInput from '../Forms/TextInput.vue';
 import CheckboxInput from '../Forms/CheckboxInput.vue';
@@ -68,21 +68,28 @@ export default {
         // Initialize form values
         const formValues = ref({});
         const errorsFromField = ref({});
+        const savedData = localStorage.getItem('formSchema');
+        console.log(savedData)
 
-        // Populate formValues structure based on formSchema
-        props.formSchema.forEach(fieldSchema => {
-            Object.keys(fieldSchema).forEach(key => {
-                formValues.value[key] = []; // Initialize as an array
-                fieldSchema[key].forEach(field => {
-                    formValues.value[key].push({ 
-                        [field.name]: { 
-                            value: null,      // Initialize value
-                            required: field.required || false  // Set required
-                        }
+        if (savedData) {
+            formValues.value = JSON.parse(decodeURIComponent(savedData)); // Load data from localStorage
+        } else {
+            // // Populate formValues structure based on formSchema
+            props.formSchema.forEach(fieldSchema => {
+                Object.keys(fieldSchema).forEach(key => {
+                    formValues.value[key] = []; // Initialize as an array
+                    fieldSchema[key].forEach(field => {
+                        formValues.value[key].push({ 
+                            [field.name]: { 
+                                value: null,      // Initialize value
+                                required: field.required || false  // Set required
+                            }
+                        });
                     });
                 });
             });
-        });
+        }
+
         const getError = (dataLabel,key,fieldName) => {
             let keyIndex = dataLabel+'.'+key+'.'+fieldName+'.value';
             return errorsFromField.value?errorsFromField.value[keyIndex]:'';
@@ -100,6 +107,15 @@ export default {
             getError,
             clearError,
         };
+    },
+    watch: {
+        formValues: {
+            handler: function(newSchema, oldSchema) {
+                const encodedData = encodeURIComponent(JSON.stringify(newSchema));
+                localStorage.setItem('formSchema', encodedData);
+            },
+            deep: true
+        }
     },
     methods: {
         submitForm() {

@@ -22,5 +22,13 @@ export default [
         redirect: "roles",
         seg: "roles",
         type: "route"
+    },
+    {
+        lable: "blogs",
+        icon: "NewspaperIcon",
+        link: "blogs.index",
+        redirect: "blogs",
+        seg: "blogs",
+        type: "route"
     }
 ]

@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,4 +40,5 @@ Route::middleware([
     Route::resource('/roles',RoleController::class);
     Route::resource('/users',UserController::class);
     Route::post('/users/store-dynamic-form',[UserController::class,'storeDynamicForm'])->name('user.store-dynamic-form');
+    Route::resource('/blogs',BlogController::class);
 });

@@ -31,6 +31,7 @@
         "@lbgm/pro-calendar-vue": "^1.1.6",
         "@popperjs/core": "^2.11.8",
         "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@vueup/vue-quill": "^1.2.0",
         "@vueuse/core": "^11.1.0",
         "qalendar": "^3.9.0"
     }
