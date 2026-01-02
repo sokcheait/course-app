@@ -6,14 +6,17 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Jobs\CreatePermissionJob;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RoleController extends Controller
 {
     public function index()
     {
+        $roles = app(Role::class)->isUser()->paginate(10);
         $view = "Roles/Index";
-        return Inertia::render($view);
+        return Inertia::render($view,[
+            'roles' => $roles
+        ]);
     }
 
     public function create()

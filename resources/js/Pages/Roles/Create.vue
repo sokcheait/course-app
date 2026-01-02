@@ -1,6 +1,10 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { HomeIcon,ChevronRightIcon } from '@heroicons/vue/24/solid';
+import SaveButton from '@/Components/Actions/SaveButton.vue';
+import BackButton from '@/Components/Actions/BackButton.vue';
+import TextInput from '@/Pages/Components/Forms/TextInput.vue';
 
 export default {
     components: {
@@ -8,6 +12,10 @@ export default {
         Head, 
         Link, 
         useForm,
+        SaveButton,
+        BackButton,
+        TextInput,
+        HomeIcon,ChevronRightIcon
     },
     props: {
         list_permissions: Object,
@@ -81,46 +89,58 @@ export default {
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout title="Create Role">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Role Create
-            </h2>
-        </template>
-
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-2 w-full flex">
-                            <label class="px-2 mt-2">Name</label>
-                            <input type="text" v-model="form.name" class="w-full px-2 py-2 border-gray-400 rounded-md" placeholder="input name" />
-                        </div>
-                    </div>
-                    <div class="p-2">
-                        <div class="">
-                            <label class="px-2">Permissions</label>
-                        </div>
-                        <div class="w-full flex">
-                            <ul v-for="(permissions,index) in list_permissions" :key="index" class="ml-4 px-4">
-                                <li class="text-base mb-1 px-1 py-1 border-b">
-                                    <input type="checkbox" v-model="checkedAll[index]" @change='onChange($event,permissions)' class="" />
-                                    <label class="px-2 mt-2 capitalize">{{ index }}</label>
-                                </li>
-                                <li v-for="(permission,key) in permissions" :key="key" class="text-sm px-2 ml-4 py-1">
-                                    <input type="checkbox" v-model="form.permissions" :value="key" @change="updateChildren($event,index)" class=""/>
-                                    <label class="px-2 mt-2">{{ permission }}</label>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flex p-2">
-                        <div class="px-2 w-full py-1 bg-teal-600 text-white text-center shadow-md rounded-lg cursor-pointer" @click="save">
-                            save
-                        </div>
-                    </div>
+            <div class="ml-auto flex items-center space-x-7">
+                <div class="ms-3 relative ">
+                    Role
                 </div>
             </div>
+        </template>
+        <div class="px-4 pt-4 flex flex-col w-full sticky top-0">
+            <div class="flex items-center text-sm text-gray-600 dark:text-white">
+                <HomeIcon class="w-4 h-4 mx-1" />
+                <ChevronRightIcon class="w-4 h-4 mx-1 mt-[1px]" />
+                <Link :href="route('roles.index')" class="mt-[3px]">
+                    <span class="mx-1">Roles</span>
+                </Link>
+                <ChevronRightIcon class="w-4 h-4 mx-1 mt-[1px]" />
+                <span class="mx-1 mt-[3px]">Create</span>
+            </div>
         </div>
+        <div class="sm:p-7 p-4">
+            <div class="bg-white overflow-hidden shadow sm:rounded-lg">
+                <div class="grid grid-cols-2 gap-4">
+                    <text-input label="Name" 
+                        v-model="form.name"
+                        type="text"
+                        :errors="form.errors.name"
+                        required="required"
+                        placeholder="Please input name" 
+                    />
+                </div>
+                <div class="p-2">
+                    <div class="">
+                        <label class="px-2">Permissions</label>
+                    </div>
+                    <div class="w-full flex">
+                        <ul v-for="(permissions,index) in list_permissions" :key="index" class="ml-4 px-4">
+                            <li class="text-base mb-1 px-1 py-1 border-b">
+                                <input type="checkbox" v-model="checkedAll[index]" @change='onChange($event,permissions)' class="" />
+                                <label class="px-2 mt-2 capitalize">{{ index }}</label>
+                            </li>
+                            <li v-for="(permission,key) in permissions" :key="key" class="text-sm px-2 ml-4 py-1">
+                                <input type="checkbox" v-model="form.permissions" :value="key" @change="updateChildren($event,index)" class=""/>
+                                <label class="px-2 mt-2">{{ permission }}</label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex py-4 justify-end text-center">
+                    <save-button @click="save" class="" />
+                    <back-button label="Back" />
+                </div>
+            </div>
+        </div>      
     </AppLayout>
 </template>

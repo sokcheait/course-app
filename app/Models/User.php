@@ -28,7 +28,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password','access_level','access_level_master'
+        'name', 'email', 'password','access_level','access_level_master',
+        'first_name','last_name','gender','phone_number','date_of_birth','nationality','marital_status','is_active'
     ];
 
     /**
@@ -67,5 +68,9 @@ class User extends Authenticatable
             return [$pr['name'] => true];
         });
    
+    }
+    public function scopeActive(Builder $query)
+    {
+        return $query->where('is_active', true);
     }
 }
