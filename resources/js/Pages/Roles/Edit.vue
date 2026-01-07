@@ -2,18 +2,17 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { HomeIcon,ChevronRightIcon } from '@heroicons/vue/24/solid';
-import { useToast } from "vue-toastification";
 import SaveButton from '@/Components/Actions/SaveButton.vue';
 import BackButton from '@/Components/Actions/BackButton.vue';
 import TextInput from '@/Pages/Components/Forms/TextInput.vue';
 import ToggleSwitch from '@/Components/Forms/ToggleSwitch.vue';
+import { useToast } from "vue-toastification";
 
 export default {
     components: {
         AppLayout,
         Head, 
-        Link, 
-        useForm,
+        Link,
         SaveButton,
         BackButton,
         TextInput,
@@ -22,6 +21,7 @@ export default {
     },
     props: {
         list_permissions: Object,
+        role: Object
     },
     setup() {
         const toast = useToast();
@@ -31,6 +31,7 @@ export default {
     data() {
         return {
             form:useForm({
+                _method:'PUT',
                 name: '',
                 is_active:false,
                 permissions:[]
@@ -40,7 +41,17 @@ export default {
         }
     },
     created() {
-        
+        if(this.role){
+            this.form.name = this.role.name;
+            this.form.is_active = this.role.is_active;
+            this.form.permissions = this.role.permissions ?? []
+        }
+        Object.keys(this.list_permissions).forEach(group => {
+            const perms = Object.keys(this.list_permissions[group])
+            this.checkedAll[group] = perms.every(p =>
+                this.form.permissions.includes(p)
+            )
+        })
     },
     watch:{
         
@@ -76,26 +87,22 @@ export default {
             return  arr.filter(x => !value.includes(x));
         },
         save() {
-            this.form.post(this.route('roles.store'), {
+            this.form.post(this.route('roles.update',this.role.id), {
                 preserveScroll: true,
                 onSuccess: () => {
-                    this.toast.success("Create roles successfully");
+                    this.toast.success("Update roles successfully");
                 },
                 onError: () => {
-                    this.toast.errors("Create roles Errors");
+                    this.toast.errors("Update roles Errors");
                 },
             });
         }
     },
-    mounted(){
-       
-    }
-
 }
 </script>
 
 <template>
-    <AppLayout title="Create Role">
+    <AppLayout title="Edit Role">
         <template #header>
             <div class="ml-auto flex items-center space-x-7">
                 <div class="ms-3 relative ">
@@ -111,11 +118,11 @@ export default {
                     <span class="mx-1">Roles</span>
                 </Link>
                 <ChevronRightIcon class="w-4 h-4 mx-1 mt-[1px]" />
-                <span class="mx-1 mt-[3px]">Create</span>
+                <span class="mx-1 mt-[3px]">Edit</span>
             </div>
         </div>
         <div class="sm:p-7 p-4">
-            <div class="bg-white overflow-hidden shadow sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow sm:rounded-lg text-black">
                 <div class="grid grid-cols-2 gap-4">
                     <text-input label="Name" 
                         v-model="form.name"
@@ -124,7 +131,7 @@ export default {
                         required="required"
                         placeholder="Please input name" 
                     />
-                    <ToggleSwitch v-model="form.is_active" label="Status" />
+                    <toggle-switch v-model="form.is_active" label="Status" class="-mt-8" />
                 </div>
                 <div class="p-2">
                     <div class="">

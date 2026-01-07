@@ -15,6 +15,12 @@ return new class extends Migration
             $table->boolean('is_active')
                   ->default(true)
                   ->after('guard_name');
+
+            $table->unsignedBigInteger('created_by')->nullable()->after('id');
+            $table->unsignedBigInteger('updated_by')->nullable()->after('created_by');
+
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');      
         });
     }
 
@@ -24,7 +30,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->dropColumn('is_active');
+            $table->dropForeign(['created_by']);
+            $table->dropForeign(['updated_by']);
+            $table->dropColumn(['is_active','created_by', 'updated_by']);
         });
     }
 };

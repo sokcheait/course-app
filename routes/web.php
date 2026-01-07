@@ -37,5 +37,6 @@ Route::middleware([
     })->name('dashboard');
     Route::resource('/roles',RoleController::class);
     Route::resource('/users',UserController::class);
+    Route::post('users/import',[UserController::class,'importUser'])->name('users.import');
     Route::post('/users/store-dynamic-form',[UserController::class,'storeDynamicForm'])->name('user.store-dynamic-form');
 });

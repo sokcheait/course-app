@@ -6,6 +6,11 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { ProCalendar } from "@lbgm/pro-calendar-vue";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
 import "@lbgm/pro-calendar-vue/style";
 import { createDynamicForms } from '@asigloo/vue-dynamic-forms'
 const VueDynamicForms = createDynamicForms()
@@ -24,6 +29,8 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(ProCalendar)
+            .use(Toast)
+            .use(VueSweetalert2)
             .use(VueDynamicForms)
             .use(VanillaComponents)
             .mixin({methods: {

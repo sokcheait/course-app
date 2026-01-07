@@ -1,5 +1,7 @@
 <script>
 import AppLayout from '@/Layouts/AppLayout.vue';
+import { markRaw,shallowRef } from 'vue'
+import DestroyMixin from '@/Actions/DestroyMixin.js'
 import { Head, Link, router } from '@inertiajs/vue3';
 import NavLink from '@/Components/NavLink.vue';
 import { HomeIcon,ChevronRightIcon } from '@heroicons/vue/24/outline';
@@ -8,6 +10,7 @@ import DataTable from '@/Components/DataTable/DataTable.vue';
 import StatusBadge from '@/Components/Actions/StatusBadge.vue';
 import TableActionMenu from '@/Components/DataTable/TableActionMenu.vue'
 export default {
+    mixins: [DestroyMixin],
     components: {
         AppLayout,
         StatusBadge,
@@ -21,17 +24,24 @@ export default {
         roles:Object
     },
     setup() {
-       
+      
     },
     data() {
         return {
            columns:[
                 { label: 'ID', field: 'id' },
-                { label: 'Name', field: 'name', render: null  },
-                { label: 'Status', field: 'is_active', render: StatusBadge  },
+                { label: 'Name', field: 'name' },
+                { label: 'Status', slot: 'is_active'},
+                { label: 'Created At', field: 'created_at_formatted' },
+                { label: 'Updated At', field: 'updated_at_formatted' },
                 { label: 'Action', slot: 'actions', hidden: true },
             ]
         }
+    },
+    methods: {
+        // destroy(item){
+        //     console.log(item)
+        // }
     }
 }    
 </script>
@@ -63,25 +73,28 @@ export default {
                 </Link>
             </div>
             <DataTable :items="roles" :columns="columns">
+                <template #is_active="{ item }">
+                    <StatusBadge :item="item" />
+                </template>
                 <template #actions="{ item }">
                     <TableActionMenu :item="item">
                         <template #default="{ item, close }">
-                            <button
-                                @click="edit(item); close()"
-                                class="block w-full px-4 py-2 text-sm hover:bg-gray-100"
+                            <Link
+                                :href="route('roles.edit', item.id)"
+                                class="flex w-full px-4 py-2 text-sm hover:bg-gray-100"
                             >
                                 Edit
-                            </button>
+                            </Link>
 
                             <button
-                                @click="destroy(item); close()"
-                                class="block w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                                @click="destroy(item.id, 'roles.destroy')"
+                                class="flex w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                             >
                                 Delete
                             </button>
                         </template>
                     </TableActionMenu>
-                    </template>
+                </template>
             </DataTable>
         </div>    
     </AppLayout>

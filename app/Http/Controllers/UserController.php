@@ -8,6 +8,8 @@ use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Team;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UsersImport;
 
 class UserController extends Controller
 {
@@ -21,16 +23,24 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        // dd($request);
         $this->authorize('users.index');
+        $query = User::query();
+        if ($request->filled('status')) {
+            $query->where('is_active', $request->status);
+        }
+        if ($request->filled('dateRange')) {
+            $query->where('created_at', '>=', now()->subDays($request->dateRange));
+        }
+        if ($request->filled('searchQuery')) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', "%{$request->searchQuery}%")
+                ->orWhere('email', 'like', "%{$request->searchQuery}%");
+            });
+        }
+        $perPage = $request->input('per_page', 10);
+        $users = $query->paginate($perPage)->withQueryString();
         $view = "Users/Index";
-        $users = User::paginate(10);
         return Inertia::render($view)->with(['users' => $users]);
-        // return response()->json([
-        //     'message' => 'User created successfully!',
-        //     'redirect' => route('users.index'), // URL to redirect to
-        //     'users' => $users, // Optionally return the created user data
-        // ]);
     }
 
     public function create()
@@ -88,96 +98,13 @@ class UserController extends Controller
 
     }
 
-    public function storeDynamicForm(Request $request)
+    public function importUser(Request $request)
     {
-        // Get all input data
-        $data = $request->all();
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls,csv'
+        ]);
+        Excel::queueImport(new UsersImport, $request->file('file'));
 
-        // Initialize validation rules
-        $rules = [];
-        $messages = [];
-
-        // Iterate through input data
-        foreach ($data as $key => $items) {
-            if (is_array($items)) {
-                foreach ($items as $index => $item) {
-                    foreach ($item as $fieldKey => $fieldValue) {
-                        if (array_key_exists('value', $fieldValue)) {
-                            $rule = '';
-
-                            // Add 'required' rule if specified and value is empty
-                            if (isset($fieldValue['required']) && $fieldValue['required']) {
-                                $rule .= 'required|';
-                            }
-                             // Add dynamic rules (like email)
-                            if (isset($fieldValue['required']) && $fieldValue['required'] && $fieldKey === 'email') {
-                                $rule .= 'email|'; // Add email rule here
-                            }
-
-                            // Check if the field contains a 'rules' key with dynamic validation rules
-                            if (isset($fieldValue['rules']) && is_string($fieldValue['rules'])) {
-                                $rule .= $fieldValue['rules'];
-                            }
-
-                            // Assign the rule to the corresponding validation key
-                            if ($rule) {
-                                $rules["$key.$index.$fieldKey.value"] = rtrim($rule, '|'); // Remove trailing pipe
-
-                                // Custom messages
-                                $fieldName = ucfirst(str_replace('_', ' ', $fieldKey)); // Format field name
-
-                                if (strpos($rule, 'email') !== false) {
-                                    $messages["$key.$index.$fieldKey.value.email"] = "The $fieldName field must be a valid email address.";
-                                }
-                                if (strpos($rule, 'required') !== false) {
-                                    $messages["$key.$index.$fieldKey.value.required"] = "The $fieldName field is required.";
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        try {
-            // $validatedData = $request->validate($rules);
-            $validatedData = $request->validate($rules, $messages);
-            $transformedData = $this->extractValues($data);
-            dd($transformedData);
-
-        } catch (ValidationException $e) {
-            // Customize the error messages
-            $errors = $e->validator->errors();
-    
-            // Return the customized error messages
-            // return response()->json(['errors' => $customErrors], 422);
-            return redirect()->back()->withErrors($errors);
-        }
-        //  $validatedData = $request->validate($rules);
-         dd($validatedData);
-
+        return redirect()->back()->with('success', 'Users imported successfully');
     }
-
-    // Helper function to recursively extract 'value' fields
-    private function extractValues(array $data): array
-    {
-        $result = [];
-
-        foreach ($data as $key => $items) {
-            if (is_array($items)) {
-                foreach ($items as $subKey => $subItems) {
-                    if (is_array($subItems)) {
-                        foreach ($subItems as $field => $attributes) {
-                            // Check if 'value' exists in attributes and assign it to result
-                            // if (isset($attributes['value'])) {
-                                $result[$key][$field] = $attributes['value'];
-                            // }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $result;
-    }
-
 }

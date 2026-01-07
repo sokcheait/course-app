@@ -143,7 +143,7 @@ export default {
                     :key="index"
                     @click="updateTab(tab)"
                     class="px-3 border-b-2 border-transparent dark:text-gray-400 pb-1.5"
-                    :class="{'border-b-blue-500 text-blue-500': selectedTab === tab.componentName }"
+                    :class="{'border-b-teal-500 text-teal-500': selectedTab === tab.componentName }"
                 >
                     {{ tab.label }}
                 </button>

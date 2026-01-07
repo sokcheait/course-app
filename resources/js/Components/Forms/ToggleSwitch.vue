@@ -8,7 +8,7 @@
                 :checked="modelValue" 
                 @change="onChange"
             />
-            <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-yellow-400 transition-colors duration-300"></div>
+            <div class="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-green-600 transition-colors duration-300"></div>
             <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-all duration-300 peer-checked:left-6"></div>
         </div>
     </label>
