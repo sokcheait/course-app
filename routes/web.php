@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\SystemController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,6 +37,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    Route::get('countries',[CountryController::class,'index'])->name('countries.index');
+    Route::resource('system',SystemController::class);
+    Route::get('system',[SystemController::class,'index'])->name('system.index');
     Route::resource('/roles',RoleController::class);
     Route::resource('/users',UserController::class);
     Route::post('users/import',[UserController::class,'importUser'])->name('users.import');
